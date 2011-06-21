@@ -37,7 +37,7 @@ After you download and set up an HTML page to use JCC, you are pretty much
 ready to go! Each place in your document where you want to use JCC magic, just
 add the "jcc" (saved word) class to that HTML element. Like so:
 
-    <p class="jcc">...</p> 
+    <p class="jcc">...</p>
 
 Once tagged with the jcc class, this element is referred to as a JCC container
 or JCC context. Now you can start using the JCC magic inside that element by
