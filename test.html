@@ -1,0 +1,621 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:jcc="http://www.w3.org/1999/jcc"
+	xmlns="http://www.w3.org/1999/xhtml" debug="true">
+<head>
+<meta http-equiv="content-type"
+	content="text/html; charset=windows-1250">
+<title>JavaScript SandBox</title>
+<script language="javascript" type="text/javascript"
+	src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+
+<script language="javascript" type="text/javascript" src="jcc.js"></script>
+
+<link type="text/css" rel="stylesheet" href="jcc.css" />
+
+
+    <!--[if IE]>
+    <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+    <![endif]-->
+
+
+
+	<style>	
+	fieldset {  
+	margin: 1.5em 0 0 0;  
+	padding: 0;  
+	}  
+	legend {  
+	margin-left: 1em;  
+	color: #000000;  
+	font-weight: bold;  
+	}  
+	fieldset ol {  
+	padding: 1em 1em 0 1em;  
+	list-style: none;  
+	}  
+	fieldset li {  
+	padding-bottom: 1em;  
+	}  
+	fieldset.submit {  
+	border-style: none;  
+	}
+	
+	label {    
+	float: left;    
+	width: 10em;    
+	margin-right: 1em;  
+	}
+
+	</style>
+</head>
+<body>
+<h1>JCC JavaScript SandBox</h1>
+<hr />
+
+<hr />
+
+
+<!-- http://www.w3schools.com/html/tryit.asp?filename=tryhtml_tables2 //-->
+<script type="text/javascript">
+
+var guides = [
+              {"name": "Albert", "country" : "Germany"},
+              {"name": "Marvin", "country" : "Argentina"},
+              {"name": "Jia", "country" : "China"}
+            ];
+ 
+var name="George";
+
+var ourdata = 
+	[{index: "default", value: "Guess which animal makes this noise"},
+	{index: "Cow", value: "Moooo"},
+	{index: "Cat", value: "Meeooow"},
+	{index: "Dog", value: "Wooof Wooof Wooof"},
+	{index: "Sheep", value: "Meh-he-he-he-he"}];
+
+var data2 = 
+	[{index: "Why", value: "Because I said so"},
+	{index: "What", value: "Banana"},
+	{index: "Where", value: "Barcelona"},
+	{index: "Who", value: "Obama"},
+	{index: "How", value: "With his hands"}];
+
+var newdata = 
+	[{index: "Why", value: "NEW1"},
+	{index: "What", value: "NEW2"},
+	{index: "Where", value: "NEW3"}];
+
+var value = "globalScopeValue";
+
+var tableData = [
+				["Moshe", "Haviv", 0, 4],
+				["Uzi", "Motro", 10, 5]
+                 ];
+
+var newTableData = [
+ 				["Moshe", "Haviv", 0, 4],
+ 				["Orna", "KuperMan", 9, 9],
+ 				["Jeff", "Roz.", 9, 4],
+ 				["Bob", "Roz.", 12, 4],
+ 				["Uzi", "Motro", 10, 5]
+                  ];
+var tableHead = ["Name", "Family", "Grade", "Age"];
+
+
+	var CountryStateCity = [ {
+		"country" : "Canada",
+		"states" : [ {
+			"state" : "Alberta",
+			"cities" : [ "Edmonton", "Calgary" ]
+		}, {
+			"state" : "British Columbia",
+			"cities" : [ "Victoria", "Vancouver" ]
+		}, {
+			"state" : "Ontario",
+			"cities" : [ "Toronto", "Hamilton" ]
+		} ]
+	}, {
+		"country" : "Mexico",
+		"states" : [ {
+			"state" : "Baja California",
+			"cities" : [ "Tijuana", "Mexicali" ]
+		}, {
+			"state" : "Chihuahua",
+			"cities" : [ "Ciudad Juárez", "Chihuahua" ]
+		}, {
+			"state" : "Jalisco",
+			"cities" : [ "Guadalajara", "Chapala" ]
+		} ]
+	}, {
+		"country" : "United States",
+		"states" : [ {
+			"state" : "California",
+			"cities" : [ "Los Angeles", "San Francisco" ]
+		}, {
+			"state" : "Florida",
+			"cities" : [ "Miami", "Orlando" ]
+		}, {
+			"state" : "New York",
+			"cities" : [ "Buffalo", "New York" ]
+		} ]
+	} ];
+
+    function getStates() {
+    	   var country=document.getElementById('country_select').value;
+    	   return country==0 ? [] : CountryStateCity[country-1].states;
+    }
+    
+    function getCities() {
+        var country=document.getElementById('country_select').value;
+        var state=document.getElementById('state_select').value;
+        return country*state==0 ?
+                [] : CountryStateCity[country-1].states[state-1].cities;
+    }
+
+    function showCityGreet() {
+        var citySel=document.getElementById('city_select');
+        var greet;
+        if (citySel.value==0) {
+            greet="Select a Country, State & City first.";
+        } else {
+        	greet="Welcome to "+citySel.options[citySel.value].text;
+        }
+        alert(greet);
+        return false;
+    }
+    
+	var docNav = [ 
+	        		{
+	        		title: "Data Repetition", 
+	        		child: [
+	        			{"link": "simple_repetition", "text": "Simple Data Repetition" },
+	        			{"link": "nested_repetition", "text": "Nested Data Repetition" },
+	        			{"link": "complex_dependancy", "text": "Complex Dependency" }
+	        			]
+	        		}
+	        	];
+
+	var docNav2 = [{"title":"Overview","child":[{"text":"JCC Concepts","link":"overview"}]},{"title":"Data Sources","child":[{"text":"Basic Data Sources","link":"basic_data"},{"text":"Nested Data Sources","link":"nested_data"},{"text":"Ajax Data Sources","link":"ajax_data"},{"text":"Aliasing Data Sources","link":"alias_data"}]},{"title":"Data Repetition","child":[{"text":"Simple Data Repetition","link":"simple_repetition"},{"text":"Nested Data Repetition","link":"nested_repetition"},{"text":"Complex Dependency","link":"complex_dependency"},{"text":"Tabular Data","link":"tabular_data"},{"text":"Enumerating Data Sets","link":"enumeration"},{"text":"DOM ID Handling","link":"repeat_dom_id"}]},{"title":"Data Filtering","child":[{"text":"Filtering Data Sets","link":"filtered_data"}]},{"title":"Refreshing Elements","child":[{"text":"Simple Refreshing","link":"simple_refresh"},{"text":"Refresh Callback","link":"callback_refresh"}]},{"title":"Callbacks","child":[{"text":"Defining a Callback Function","link":"callback"}]},{"title":"Expressions","child":[{"text":"JCC Expressions","link":"expressions"}]},{"title":"Extending JCC","child":[{"text":"Defining New JCC Attributes","link":"new_attributes"},{"text":"Creating JCC Widgets","link":"widgets"}]}]
+
+	
+	var lll = [ 
+	      		{
+	      		title: "out1", 
+	      		middle: [
+	      			{inside: {text: "aaa"}, label:"in1", a: [{b:1}, {b:2}]},
+	      			{inside: {text: "bbb"}, label:"in2", a: [{b:1}, {b:2}]},
+	      			{inside: {text: "ccc"}, label:"in3", a: [{b:1}, {b:2}]}
+	      			]
+	      		},
+	      		{
+	          		title: "out2", 
+	          		middle: [
+	               			{inside: {text: "ddd"}, label:"in4", a: [{b:1}, {b:2}]},
+	               			{inside: {text: "eee"}, label:"in5", a: [{b:1}, {b:2}]},
+	               			{inside: {text: "rrr"}, label:"in6", a: [{b:1}, {b:2}]}
+	               			]
+	          		}
+	      	];
+
+
+	var ddd = [
+	           {a: "f"},
+	           {a: "g"}
+	           ];
+
+	var eee = [
+	           {a: "h"},
+	           {a: "i"}
+	           ];
+
+	var fff = [
+	           {a: "j"},
+	           {a: "k"}
+	           ];
+
+	var myCountries = {
+	   		title: "My Countries", 
+	   		countries: [
+	   					{"code": "ca", "country" : "Canada"},
+	                 	{"code": "mx", "country" : "Mexico"},
+	                	{"code": "us", "country" : "United States"}
+	   					
+	   				]
+	   	};
+
+	var registeredFunction = function(node, attrValue) {
+		$(node).css('color', attrValue);
+	};
+
+	var registeredWidget = function(node) {
+		var elem = $(node);
+		var newNode;
+		var me = this;
+
+		var str = "<div>WIDGET</div>";
+
+		return str;
+	};
+
+	var dataTableCallBack = function(node) {
+		$(node).dataTable();
+	}
+
+	var myForm = {
+		action : "submit.php",
+		method : "post",
+		legend : "My Form",
+		fields : [ {
+			text : "Your Name",
+			attributes : {
+				name : "empname",
+				type : "text",
+				required : "true",
+				value : "George"
+			}
+		}, {
+			text : "Your email",
+			attributes : {
+				name : "eAddress",
+				type : "email",
+				placeholder : "You're email"
+			}
+		} ],
+		submit : {
+			value : "Go!"
+		}
+	}
+
+	window["jccLib"].registerHandler("color", registeredFunction,
+			jcc.CONSTANTS.HANDLER_TYPES.POST_HANDLER);
+
+	window["jccLib"].registerHandler("myWidget", registeredWidget,
+			jcc.CONSTANTS.HANDLER_TYPES.WIDGET);
+
+	function myFilter(index, data) {
+		return (data.value.indexOf(" ") >= 0);
+	}
+
+	var refreshDataTable = function(node) {
+		$(node).parent().remove();
+	}
+
+	function dataFunction(a) {
+		if (a==1){
+			return tableData;
+		} else {
+			return newTableData;
+		}
+	}
+
+	var myTodoList = ["Buy milk", "Finish report", "a", "b", "c", "d", "e"];
+	 
+	function updateTodoList() {
+	    myTodoList.pop();
+	    myTodoList.push("Sleep");
+	    myTodoList.push("Pick up package");
+	     
+	}
+
+	function rebuildFunc(node) {
+		//console.log($(node).children().attr('jcc:repeat','odd'));
+		var t=($(node).find("li[id=aaa]")).attr('jcc:repeat','odd');
+		if (console && typeof console.log=="function")
+		  console.log(t);
+		else
+		  window.status = t;
+	}
+
+	function returnVars() {return ['test1','test2'];}
+</script>
+HTML: See source :-)
+<hr />
+JAVASCRIPT: See source :-)
+<br />
+
+<hr />
+<a href="javascript:void(0)" onclick='javascript:ourdata=newdata;window["jccLib"].refresh("asdf");'>Refresh one</a>:  
+Refreshes section 1<br/>
+<a href="javascript:void(0)" onclick='javascript:ourdata=newdata;window["jccLib"].refresh("asdf", function() {alert(666);});'>Refresh one</a>:  
+Refreshes section 1 with alert callback<br/>
+<a href="javascript:void(0)" onclick='javascript:ourdata=newdata;tableData=newTableData;window["jccLib"].refresh(["asdf", "myTable"]);'>Refresh some</a>:
+Refreshes section 1 and the first table in section 3 <br/>
+<a href="javascript:void(0)" onclick='javascript:ourdata=newdata;window["jccLib"].refresh();'>Refresh All</a>: 
+Refreshes everything, fucks up the "old" integration with the dataTable plugin since it changes the DOM and no one cleans up after it during refresh.
+
+
+<hr />
+RESULT:
+
+	
+	
+<h2>SECTION 1</h2>
+
+<ul class="jcc" jcc:data="docNav">
+	<li jcc:repeat="all">
+		#{title}
+		<ul jcc:data="docNav[].child">
+			<li jcc:repeat="all"><a href="/?page=docs&data=#{link}">#{text}</a> - #{docNav[].child.text}</li>
+		</ul>
+	</li>
+</ul>
+
+<ul class="jcc" jcc:data="docNav">
+	<li jcc:repeat="all">
+		#{title}
+		<ul jcc:data="child">
+			<li jcc:repeat="all"><a href="/?page=docs&data=#{link}">#{text}</a> - #{child.text}</li>
+		</ul>
+	</li>
+</ul>
+
+<div class="jcc" jcc:data="guides" >
+    <p jcc:repeat="all" jcc:runonce="i=0;">
+        <i>#{guides.name}</i> is <b>#{=guides[i++].name}</b>
+        but <b>#{=name}</b> is not <i>#{name}</i>.
+    </p>
+</div>
+
+<p>testing inline variables with no variable name</p>
+<ul class="jcc" jcc:data="['test1','test2']" jcc:alias="bob">
+    <li jcc:repeat="all">#{bob}</li>
+</ul>
+
+<p>testing inline functions with no variable name</p>
+<ul class="jcc" jcc:data="function() {return ['test1','test2'];}">
+    <li jcc:repeat="all">#{data}</li>
+</ul>
+
+<p>testing function pointers with no variable name</p>
+<ul class="jcc" jcc:data="returnVars">
+    <li jcc:repeat="all">#{returnVars}</li>
+</ul>
+
+<p>testing function calls with no variable name</p>
+<ul class="jcc" jcc:data="returnVars()">
+    <li jcc:repeat="all">#{data}</li>
+</ul>
+<ul class="jcc" jcc:data="tableData">
+    <li jcc:repeat="all" id="a">
+    	<b id="b">#{0}</b> 
+    </li>
+    <li id="c">ID repetition</li>
+</ul>
+
+<ul class="jcc" jcc:data="dataFunction(1)" jcc:alias="df">
+    <li jcc:repeat="all">
+    	<b>#{df.0}</b> (Code: #{1})
+    </li>
+</ul>
+
+<ul class="jcc" jcc:data="dataFunction(2)" jcc:alias="df">
+    <li jcc:repeat="all">
+    	<b>#{df.0}</b> (Code: #{1})
+    </li>
+</ul>
+
+<ul class="jcc">
+	<li>#{=new Date()}</li>
+</ul>
+
+My TODO List
+<ul class="jcc" jcc:data="myTodoList" id="todo1">
+    <li jcc:repeat="all" id="aaa">
+      <b>#{myTodoList}</b>
+    </li>
+</ul>
+ 
+ 
+<button onclick="javascript:updateTodoList();">Update TODO List Variable</button> |
+<button href="javascript:void(0)"
+    onclick="javascript:jccLib.refresh('todo1', null, rebuildFunc);">Refresh</button>
+
+
+<div class="jcc" jcc:data="ourdata" id="asdf" jcc:alias="ourdataAlias">
+	<ul jcc:repeat="repeat" >
+		<li>going to print data2:
+				<ul jcc:repeat="all" jcc:data="data2">
+					<li><b>#{index} - #{value}</b>: #{=new Date()} ||| #{=value}</li>
+					<li jcc:color="red"><b>#{ourdata.index} - #{ourdataAlias.value}</b>: #{=new Date()}</li>
+				</ul>
+		</li>
+		<li>#{index} - #{value}</li>
+	</ul>
+	<div jcc:repeat="repeat">
+		<div>
+			<a><b>#{value}</b><br/></a>
+			
+			<form jcc:data="data2">
+				<span jcc:repeat="repeat">
+					<input type="radio"  name="mm_123" value="#{index}">
+					#{value} <br/>
+				</span>
+			</form> 
+		</div>
+		<br/>
+	</div>	
+</div>
+
+<div class="jcc" jcc:data="lll"">
+	<ul jcc:repeat="repeat">
+		<li jcc:data="lll[].middle">
+			<ul>
+				<li jcc:repeat="all">
+					<ul jcc:data="lll[].middle[].a">
+						<li jcc:repeat="all">
+							
+							#{lll.title} - #{label} - #{b} - #{lll[].middle[].a.b}
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</div>
+
+
+<div class="jcc" jcc:data="ddd"">
+	<ul jcc:repeat="repeat">
+		<li jcc:data="eee">
+			<ul jcc:repeat="all">
+				<li>
+					<ul jcc:data="fff">
+						<li jcc:repeat="all">
+							
+							#{a}
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</div>
+ 
+ 
+<h2>SECTION 2</h2>
+<fieldset><legend>Testing filters</legend>
+        <form class="jcc" jcc:data="data2" jcc:alias="selectData" jcc:enumerate="i">
+           <p jcc:color="red">*Note: filters are 0-based, enumeration is 1-based.</p>
+           <p>Show All</p>
+	        <select>
+	            <option value="#{index}" jcc:repeat="all">#{i} #{selectData.value}</option>
+	        </select>
+
+           <p>Show None</p>
+            <select>
+                <option value="#{index}" jcc:repeat="none">#{i} #{selectData.value}</option>
+            </select>
+            
+           <p>Show Evens only</p>
+            <select>
+                <option value="#{index}" jcc:repeat="even">#{i} #{selectData.value}</option>
+            </select>
+            
+           <p>Show Odds only</p>
+            <select>
+                <option value="#{index}" jcc:repeat="odd">#{i} #{selectData.value}</option>
+            </select>
+            
+           <p>Show n-th only (4th)</p>
+            <select>
+                <option value="#{index}" jcc:repeat="3">#{i} #{selectData.value}</option>
+            </select>
+            
+           <p>Show subset ( [0-2], 1, 4)</p>
+            <select>
+                <option value="#{index}" jcc:repeat="0-2, 1, 4">#{i} #{selectData.value}</option>
+            </select>
+
+           <p>Show whats NOT in the subset ( [0-2], 1, 4)</p>
+            <select>
+                <option value="#{index}" jcc:repeat="not(0-2, 1, 4)">#{i} #{selectData.value}</option>
+            </select>
+
+           <p>Show every n-th element (third) (using inline index func)</p>
+            <select>
+                <option value="#{index}" jcc:repeat="function(i){return (i+1)%3==0;}">#{i} #{selectData.value}</option>
+            </select>
+
+           <p>Show only items with space in them (using external data func)</p>
+            <select>
+                <option value="#{index}" jcc:repeat="myFilter">#{i} #{selectData.value}</option>
+            </select>
+
+           <p>Show only items NOT starting with b (using inline data func)</p>
+            <select>
+                <option value="#{index}" jcc:repeat="function(i,item){return item.value.charAt(0).toLowerCase()!='b';}">#{i} #{selectData.value}</option>
+            </select>
+
+        </form>
+</fieldset>
+
+<hr/>
+
+<h2>SECTION 2.1</h2>
+<fieldset><legend>Testing dynamic refresh</legend>
+        <form action="#" onsubmit="return showCityGreet();">
+           <p>Select Country</p>
+            <select name="country" id="country_select" class="jcc" jcc:data="CountryStateCity" jcc:enumerate="i" onchange="jccLib.refresh('state_select');">
+                <option value="0">Select one</option>
+                <option value="#{i}" jcc:repeat="all">#{country}</option>
+            </select>
+           <p>Select State</p>
+            <select name="state" id="state_select" class="jcc" jcc:data="getStates" jcc:enumerate="i" onchange="jccLib.refresh('city_select');" jcc:callback="jccLib.refresh('city_select');">
+                <option value="0">Select one</option>
+                <option value="#{i}" jcc:repeat="all">#{state}</option>
+            </select>
+           <p>Select City</p>
+            <select name="city" id="city_select" class="jcc" jcc:data="getCities" jcc:enumerate="i" jcc:alias="city">
+                <option value="0">Select one</option>
+                <option value="#{i}" jcc:repeat="all">#{city}</option>
+            </select>
+            <input type="submit" />
+        </form>
+</fieldset>
+
+<hr />
+
+<!-- 
+ Ajax Same Origin Policy problem on localhost? 
+Inline Ajax sample:<br/>
+<dl class="jcc" jcc:data="localVar = http://hujijcc.110mb.com/Sandbox/dev/sample.txt" jcc:enumerate="i" id="sel_12354353">
+    <dd jcc:repeat="repeat">#{i}) #{won} - #{name}</dd>
+</dl>
+ -->
+
+<h2>SECTION 3</h2>
+
+Inline JSON sample:<br/>
+<dl class="jcc" jcc:data="localVar = [{'id':1,'name':'Bob','won':'1st place'}]" jcc:enumerate="i" id="sel_12354354">
+    <dd jcc:repeat="repeat">#{i}) #{won} - #{name}</dd>
+</dl>
+        
+<table class="jcc" jcc:data="tableData" border="1" id="myTable">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Family Name</th>
+			<th>Grade</th>
+		</tr>
+	</thead>
+	<tr jcc:repeat="repeat">
+		<td>#{0}</td>
+		<td>#{1}</td>
+		<td>#{2}</td>
+	</tr>
+</table>
+
+
+<jcc:table class="jccWidget" id="myWidgetTable" jcc:id="myWidgetTable2" jcc:data="tableData" jcc:tablehead="tableHead"></jcc:table>
+
+<jcc:table class="jccWidget" jcc:data="tableData" jcc:filter="0,2" jcc:tablehead="tableHead"></jcc:table>
+
+<jcc:table class="jccWidget" jcc:data="tableData" jcc:filter=" not    (3-  2 ,0  )" jcc:tablehead="{1: 'Family'}"></jcc:table>
+<br/><br/><br/><br/><br/><br/>
+<!-- <jcc:table class="jccWidget" jcc:data="tableData" jcc:class="display"  jcc:tablehead="tableHead" jcc:callback="dataTableCallBack" jcc:refresh="refreshDataTable"></jcc:table> -->
+<!-- <jcc:table class="jccWidget" jcc:data="tableData" jcc:class="display"  jcc:tablehead="tableHead" jcc:callback="function(node){$(node).dataTable();}" jcc:refresh="refreshDataTable"></jcc:table> -->
+
+<hr />
+
+<h2>SECTION 4</h2>
+<form class="jcc" jcc:data="data2" jcc:callback="function(node){$(node).css('font-weight','bold');}">
+	<span jcc:repeat="repeat">
+		<input type="radio"  name="mm_123" value="#{index}">
+		#{value} <br/>
+	</span>
+</form> 
+
+
+<h2>SECTION 5</h2>
+<jcc:form class="jccWidget" jcc:struct="myForm" ></jcc:form>
+
+<h2>SECTION 6</h2>
+<jcc:myWidget class="jccWidget" ></jcc:myWidget>
+
+<h2>SECTION 7</h2>
+<div class="jcc" jcc:timeout="1000">
+    <span>#{=new Date()}</span>
+</div>
+
+</body>
+</html>

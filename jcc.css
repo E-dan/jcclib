@@ -1,0 +1,6 @@
+.jccWidget .jccClonedElement,
+.jcc .jccClonedElement
+{
+	visibility: hidden;
+	display: none;
+}
