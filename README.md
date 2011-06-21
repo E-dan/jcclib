@@ -1,4 +1,8 @@
-# JCC Concept Overview
+JCC JavaScript Client controls
+==============================
+
+Concept Overview
+-----------------
 
 Web pages often require the content displayed to visitors to be dynamic. This
 allows to increase the relevance and customization of a web page according to
@@ -15,7 +19,8 @@ pages to format and display information on the "client side" in a dynamic way.
 The same information may be displayed in numerous forms (e.g. tables, graphs,
 lists etc) without having to request additional data from the server.
 
-# Goal
+Goal
+----
 
 The goal was to create a JavaScript library that will allow web developers to
 focus on building content instead of worrying about JavaScript and maintaining
@@ -25,7 +30,8 @@ a JSP server, and barely any server-side processing power. We allow you to
 deliver smaller web pages that are scalable and dynamic. One may say, JCC is
 to HTML as jQuery is to JavaScript. It's your "get work done" library.
 
-# So how do I use it?
+So how do I use it?
+-------------------
 
 After you download and set up an HTML page to use JCC, you are pretty much
 ready to go! Each place in your document where you want to use JCC magic, just
