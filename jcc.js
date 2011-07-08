@@ -1204,6 +1204,7 @@ jcc.prototype = {
 			this.tempIdMapping[dataValue] = 1;
 		}
 		$(node).attr("id", dataValue);
+		$(node).removeAttr("jcc:tempid");
 	},
 	
 	/*
@@ -1403,15 +1404,10 @@ jcc.prototype = {
 					var curField;
 					for(var i=0; i<struct.fields.length ;i++) {	
 						curField = struct.fields[i];
-						str += "<li><label>"+curField.text+"</label> <input ";
+						var elementType = curField.element || "input";
+						str += "<li><label>"+curField.text+"</label>";
+						str += "<"+elementType+" ";
 
-						/*
-						if (curField.attributes) {
-							$.each(curField.attributes, function (attribute, value) {
-								str += attribute+"=\"" + value +"\" ";
-							});
-						}
-						*/
 						str += iterateAttributes(curField.attributes);
 						str += " /></li>\n";
 					}
