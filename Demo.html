@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:jcc="http://www.w3.org/1999/jcc"  xmlns="http://www.w3.org/1999/xhtml" >
+    <head>
+	    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+	    <script type="text/javascript" src="jcc.min.js"></script>
+	    <title>JCC Demo</title>
+    </head>
+    
+    <body>
+    	<script type="text/javascript">
+			var jccFeatures = ["Data Repetition", "Data Filtering", "Refreshing Elements", "Callbacks", "Widgets"];
+		</script>
+		<h1>JCC Demo</h1>
+		
+    	<p class="jcc">#{="Hello World!"}</p>
+    	
+    	<h2>JCC Key Features</h2>
+    	<ul class="jcc" jcc:data="jccFeatures">
+		    <li jcc:repeat="all">#{jccFeatures}</li>
+		</ul>
+		
+		<p>
+		Check out the <a href="http://jcclib.appspot.com/">JCC Library Website</a> for more interesting features.
+		</p>
+    </body>
+</html> 
