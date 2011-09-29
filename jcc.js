@@ -56,7 +56,7 @@ var jccDictionary = function(dictionary, dictionaryName, node, alias, enumVar) {
 	alias = (alias=="") ? null : alias;
 	this.alias = alias || dictionaryName;
 	
-	//an alias for the enumarted index (defaults to alias_index)
+	//an alias for the enumerated index (defaults to alias_index)
 	enumVar = (enumVar=="") ? null : enumVar;
 	this.enumVar = enumVar || this.alias+"_index";
 };
@@ -216,8 +216,8 @@ var jccCompactRangesArray = function (rangesArray) {
 		var tmpRange=rangesArray[i];
 		tlo=tmpRange[0];
 		thi=tmpRange[1];
-		if (tlo<=lhi+1) { //since these are integers a gap of one is continues
-			if (thi>=lhi) { //expand the range & merge the subsets
+		if (tlo<=lhi+1) { //since these are integers a gap of one is continuous
+			if (thi>lhi) { //expand the range & merge the subsets
 				lhi=thi;
 			} //else: [tlo,thi] is fully contained in [llo,lhi]
 			continue;
@@ -406,6 +406,65 @@ jcc.CONSTANTS = {
 	
 };
 
+jcc.localStorageMgr = {
+		getAsObject: function (key) {
+	    var retVal;
+	    if (jcc.localStorageMgr.isSupported()) {
+	        try{
+	            retVal = $.parseJSON(jcc.localStorageMgr.getValue(key));
+	            if (retVal===null) {
+	                retVal=[];
+	            }
+	        } catch (e) {
+	            retVal = [];
+	        }
+	    } else retVal=[];
+	    
+	    return retVal;
+	},
+	
+	getValue: function (key) {
+	    var retVal;
+	    if (jcc.localStorageMgr.isSupported()) {
+	        try{
+	            retVal = window.localStorage[key];
+	        } catch (e) {
+	            retVal = null;
+	        }
+	    } else retVal=null;
+	    
+	    return retVal;
+	},
+	
+	setValue: function (key, value) {
+	    if (jcc.localStorageMgr.isSupported()) {
+	        try{
+	            window.localStorage[key] = value;
+	        } catch (e) { }
+	    }
+	},
+	
+	
+	appendToArray: function (key,data) {
+	    if (jcc.localStorageMgr.isSupported()) {
+	    	try {
+		        var curVal=$.parseJSON(jcc.localStorageMgr.getValue(key));
+		        curVal=curVal || [];
+		        if (typeof curVal=="object") {
+		            curVal.push(data);
+		            //store back
+		            jcc.localStorageMgr.setValue(key, JSON.stringify(curVal));
+		        }
+	    	} catch (e) { }
+	    	
+	    }
+	}, 
+	
+	isSupported: function() {
+		return (typeof window.localStorage != "undefined");
+	}
+};
+
   /////////////////////////////////////////////////////
  // Prototype functions:                            //
 /////////////////////////////////////////////////////
@@ -486,7 +545,6 @@ jcc.prototype = {
 			else if (typeOfArgument == "object") {
 				//array of ids
 				var nodeToRefresh;
-				var clonedNode;
 				if (nodeIdsToRefresh instanceof Array) {
 					$.each(nodeIdsToRefresh, function(index, nodeId) {
 						if (typeof nodeId == "string") {
@@ -714,7 +772,7 @@ jcc.prototype = {
 		
 		//if the container is equal to the current dictionary's node, the dictionary was pushed when we started to traverse this 
 		//container and therefore should be popped when the traversing is done.
-		if(container === this.dictStack.node) { //E-dan TODO: perhaps we should compare IDs instead of relying on DOM node comparison.
+		if(container === this.dictStack.node) {
 			this.dictStack.pop();
 		}
 		
@@ -801,7 +859,7 @@ jcc.prototype = {
 	execFunc: function(code, context, args) {
 		context = context || window;
 		args = args || [];
-		var evalCBFunc;
+		var evalCBFunc = null;
 		try {
 			evalCBFunc = new Function("var f=null; try {f= "+code+";} finally {return f;}");
 			//"dereference" evalCallbackFunction, turning it into the callback function
@@ -824,8 +882,7 @@ jcc.prototype = {
 	 * if "something" is of the form "=expression" then it is evaluated as a JS varaible
 	 */
 	replaceLiteralsHelper: function(value) {
-		//TODO quick fix - part 1 - for "{"'s being encoded to %7B when in <a href="#{stuff}">. Is this fix OK?
-		//TODO do this with regex?
+		//fix - - for "{}"'s being encoded to %7B%7D when in <a href="#{stuff}">.
 		value = value.replace(/%7B/, "{");
 		value = value.replace(/%7D/, "}");
 		
@@ -834,7 +891,7 @@ jcc.prototype = {
 		//regex to return the "something" in "#{something}"
 		var extractLiteralsRegex = /#\{([^}]*)\}/i;
 		
-		while (value.indexOf("#{") != -1) { //TODO better validation? check for closing { ?
+		while (value.indexOf("#{") != -1) {
 
 			
 			//EXAMPLE:
@@ -863,7 +920,6 @@ jcc.prototype = {
 				if (valueMatch[1].charAt(0)!="=") {
 					//the replacement is a dictionary value
 					
-					
 					if (!this.dictStack.isEmpty())  { //no point in checking if no dictionaries available.
 					
 						//check to see if evalStr is of form "dataSource.data" (I.E. contains a dot).
@@ -888,9 +944,7 @@ jcc.prototype = {
 							dicIndex = this.dictStack.peek().currentRow;
 						}
 						
-						//evalStr = "window.jccLib.dictStack.getDefinition("+dicIndex+",\""+valueMatch[1]+"\", "+dictionaryIndex+")";
 						evalValue = this.dictStack.getDefinition(dicIndex,valueMatch[1], dictionaryIndex);
-						//now evalStr = window.jccLib.dictStack.getDefinition(dicIndex,"value", dictionaryIndex);
 					}
 					
 				} else {
@@ -1026,8 +1080,6 @@ jcc.prototype = {
 				//if the dictionary has a "@", it's a nested dictionary.
 				//dic1@dic2 means "the dic2 dictionary located in the current row of the dic1 dictionary.
 				
-				
-				
 				//location of first @
 				var firstAt = dataValue.indexOf("@");
 				
@@ -1074,10 +1126,9 @@ jcc.prototype = {
 			if (!dataExists){
 				if (this.dictStack.peek()){
 					data = this.dictStack.getDefinition(this.dictStack.peek().currentRow, dataName, -1);
-					if (typeof data == "object") {
-						//success! we found the data!
-						
-					}
+//					if (typeof data == "object") {
+//						//success! we found the data!
+//					}
 				}
 			}
 			
@@ -1088,19 +1139,19 @@ jcc.prototype = {
 			dataName = m[1]; //get the var name
 			dataValue = m[2]; // get the var inline contents
 			if (httpVarRegExp.test(dataValue)) { // handle remote http content (e.g. "http://example.com/animals.json")
-				var m = httpVarRegExp.exec(dataValue);
+				m = httpVarRegExp.exec(dataValue);
 				var url = m[1];
 				var flagDone = false;
 				var ajaxData = {
 					"url" : url,
-					"async" : false, //TODO Future: enable async with callback
+					"async" : false,
 					"dataType" : "json",
 					"complete" : function() {flagDone=true;},
 					"success" : function(d) {data=d;}
 					};
 				$.ajax(ajaxData);
 				while (!flagDone) {
-					//noop //TODO: make this really async!
+					//NOOP to ensure sync
 				};
 			} else { // expect a json string.
 				var fixedJson = m[2].replace(/[']([\s\w]*)[']/g,"\"$1\""); //turn single quotes to double quotes
@@ -1130,7 +1181,7 @@ jcc.prototype = {
 		var alias;
 		var enumVar;
 		
-		try { //IE problem with first method? TODO
+		try { //IE problem with first method, fallback in catch clause
 			alias = $(node).attr("jcc\:alias");
 			enumVar = $(node).attr("jcc\:enumerate");
 		} catch (e) {
@@ -1241,9 +1292,9 @@ jcc.prototype = {
 	 * Handle jcc:table widget.
 	 */
 	handleWidgetTable:function(node) {
-		var elem = $(node);
-		var newNode;
-		var me=this;
+//		var elem = $(node);
+//		var newNode;
+//		var me=this;
 		
 		var dataSource = this.getJccNodeAttribute(node, "data"); //data source for table
 		var nodeId = this.getJccNodeAttribute(node, "id"); //id to pass to new table
@@ -1340,9 +1391,9 @@ jcc.prototype = {
 	 * Handle jcc:form widget.
 	 */
 	handleWidgetForm:function(node) {
-		var elem = $(node);
-		var newNode;
-		var me=this;
+//		var elem = $(node);
+//		var newNode;
+//		var me=this;
 		
 		var struct = this.getJccNodeAttribute(node, "struct"); //form structure for table
 		var nodeId = this.getJccNodeAttribute(node, "id"); //id to pass to new table
