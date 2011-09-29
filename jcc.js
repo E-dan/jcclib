@@ -19,7 +19,6 @@ function printDebug(msg) {
  
  */
 
-
 /*
  * A structure representing a jcc-related bundle of elements.
  * A new bundle is created for every jcc parent node (a node with class="jcc"), 
